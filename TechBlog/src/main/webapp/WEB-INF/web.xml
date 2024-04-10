@@ -24,6 +24,8 @@
   <servlet>
     <servlet-name>EditServlet</servlet-name>
     <servlet-class>com.tech.blog.servlets.EditServlet</servlet-class>
+
+
   </servlet>
 
 <!--  servlet mapping-->
