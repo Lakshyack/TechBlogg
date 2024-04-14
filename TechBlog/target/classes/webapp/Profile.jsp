@@ -140,17 +140,13 @@
                           <!-- first coloumn -->
                           <div class="col-md-8">
                             <!-- posts  -->
-                            <div class="container text-center mt-4" id="loader">
-                              <img style="height: 55px;" src="SVGs/loader.svg" alt="">
-                              <h3 class="mt-2">Loading...</h3>
+                            <div class="container text-center" id="loader">
+                              <img style="height: 15px;" src="SVGs/loader.svg" alt="">
+                              <h3 class="mt-3">Loading...</h3>
                             </div>
 
-                            <div class="container-fluid"  id="post-container">
-                              
-                            </div>
 
                           </div>
-                          
 
                         </div>
                       </div>
@@ -503,25 +499,6 @@
                           })
 
 
-                        })
-                      })
-                    </script>
-
-                    <!-- loading posts -->
-
-                    <script>
-                      $(document).ready(function(e){
-                        $.ajax({
-                          url:"load_posts.jsp",
-                          success:function(data,textStatus,jqXHR){
-                            console.log(data);
-                            $('#loader').hide();
-                            $('#post-container').html(data);
-
-                          },
-                          error: function(){
-
-                          },
                         })
                       })
                     </script>
