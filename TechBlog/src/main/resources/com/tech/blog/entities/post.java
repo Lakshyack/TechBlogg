@@ -2,7 +2,7 @@ package com.tech.blog.entities;
 
 import java.sql.Timestamp;
 
-public class post {
+public class Post {
     private int pid;
     private String pTitle;
     private String pContent;
@@ -12,7 +12,7 @@ public class post {
     private int catId;
     private  int userId;
 
-    public post(int pid, String pTitle, String pContent, String pCode, String pPic, Timestamp pDate, int catId, int userId) {
+    public Post(int pid, String pTitle, String pContent, String pCode, String pPic, Timestamp pDate, int catId, int userId) {
         this.pid = pid;
         this.pTitle = pTitle;
         this.pContent = pContent;
@@ -23,7 +23,7 @@ public class post {
         this.userId = userId;
     }
 
-    public post(String pTitle, String pContent, String pCode, String pPic, Timestamp pDate, int catId,int userId) {
+    public Post(String pTitle, String pContent, String pCode, String pPic, Timestamp pDate, int catId,int userId) {
         this.pTitle = pTitle;
         this.pContent = pContent;
         this.pCode = pCode;
@@ -33,7 +33,7 @@ public class post {
         this.userId = userId;
     }
 
-    public post() {
+    public Post() {
     }
 
     public int getPid() {

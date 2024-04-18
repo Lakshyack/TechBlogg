@@ -6,14 +6,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tech.blog.entities.post;
-import com.tech.blog.helper.ConnectionProvider;
+import com.tech.blog.entities.Post;
 
-public class postDao {
+public class PostDao {
     //fetch all details of category
     Connection con;
 
-    public postDao(Connection con) {
+    public PostDao(Connection con) {
         this.con = con;
     }
 
@@ -40,7 +39,7 @@ public class postDao {
         return list;
     }
 
-    public boolean savePost(post p) {
+    public boolean savePost(Post p) {
         boolean f = false;
         try {
             String q = "insert into posts(pTitle,pContent,pCode,pPics,catId,userId) values(?,?,?,?,?,?)";
@@ -65,11 +64,11 @@ public class postDao {
 
     }
 
-    public List<post> getAllPosts() {
-        List<post> list = new ArrayList<>();
+    public List<Post> getAllPosts() {
+        List<Post> list = new ArrayList<>();
 //fetch all the post
         try {
-            PreparedStatement pstmt = con.prepareStatement("select * from posts");
+            PreparedStatement pstmt = con.prepareStatement("select * from posts order by pid desc");
             ResultSet set = pstmt.executeQuery();
 
             while (set.next()) {
@@ -81,7 +80,7 @@ public class postDao {
                 Timestamp date = set.getTimestamp("pDate");
                 int catId = set.getInt("catId");
                 int userId = set.getInt("userId");
-                post pPost = new post(pid, pTitle, pContent, pCode, pPic, date, catId, userId);
+                Post pPost = new Post(pid, pTitle, pContent, pCode, pPic, date, catId, userId);
 
                 list.add(pPost);
 
@@ -95,8 +94,8 @@ public class postDao {
 
     }
 
-    public List<post> getPostByCatId(int catId) {
-        List<post> list = new ArrayList<>();
+    public List<Post> getPostByCatId(int catId) {
+        List<Post> list = new ArrayList<>();
         //fetch all the post by CatId
 
         try {
@@ -113,7 +112,7 @@ public class postDao {
                 Timestamp date = set.getTimestamp("pDate");
 
                 int userId = set.getInt("userId");
-                post pPost = new post(pid, pTitle, pContent, pCode, pPic, date, catId, userId);
+                Post pPost = new Post(pid, pTitle, pContent, pCode, pPic, date, catId, userId);
 
                 list.add(pPost);
 

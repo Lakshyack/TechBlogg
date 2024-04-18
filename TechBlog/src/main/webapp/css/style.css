@@ -25,3 +25,9 @@
 /* .LoginHeader img {
     margin-right: 10px;
 } */
+
+
+
+.svg-container:hover svg path{
+    fill: white; /* Change to the desired color when hovering */
+}

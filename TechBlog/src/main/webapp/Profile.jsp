@@ -1,9 +1,12 @@
 <%@page import="com.tech.blog.entities.Message" %>
   <%@page import="com.tech.blog.entities.User" %>
-    <%@page import="com.tech.blog.DAO.postDao" %>
+    <%@page import="com.tech.blog.DAO.PostDao" %>
       <%@page import="com.tech.blog.entities.Category" %>
         <%@page import="java.util.ArrayList" %>
           <%@page import="com.tech.blog.helper.ConnectionProvider" %>
+          <%@page import="com.tech.blog.entities.Post" %>
+          <%@page import="com.tech.blog.DAO.PostDao" %>
+          <%@page import="java.util.List" %>
 
             <% User user=(User)session.getAttribute("currentUser"); if(user==null){
               response.sendRedirect("loginPage.jsp"); } %>
@@ -111,20 +114,20 @@
                       <div class="container">
                         <div class="row mt-4">
                           <!-- first coloumn -->
-                          <div class="col-md-4">
+                          <div class="col-md-4"  style="scroll-behavior: auto;">
                             <!-- categories -->
 
                             <div class="list-group">
-                              <a href="#" class="list-group-item list-group-item-action active">
+                              <a href="#" onclick="getPosts(0,this)" class="c-link list-group-item list-group-item-action active">
                                 All Postss
                               </a>
                               <!-- fetchiing categories from DB  -->
-                              <% postDao d=new postDao(ConnectionProvider.getConnection()); ArrayList<Category>
+                              <% PostDao d=new PostDao(ConnectionProvider.getConnection()); ArrayList<Category>
                                 list1 = d.getAllCategories();
 
                                 for (Category cc : list1) {
                                 %>
-                                <a href="#" class="list-group-item list-group-item-action">
+                                <a href="#" onclick="getPosts(<%= cc.getCid() %>,this)" class="c-link list-group-item list-group-item-action active">
                                   <%= cc.getName()%>
                                 </a>
 
@@ -145,12 +148,12 @@
                               <h3 class="mt-2">Loading...</h3>
                             </div>
 
-                            <div class="container-fluid"  id="post-container">
-                              
+                            <div class="container-fluid" id="post-container">
+
                             </div>
 
                           </div>
-                          
+
 
                         </div>
                       </div>
@@ -365,7 +368,7 @@
 
                                   <!-- fetching category form database -->
 
-                                  <% postDao posttd=new postDao(ConnectionProvider.getConnection()); ArrayList<Category>
+                                  <% PostDao posttd=new PostDao(ConnectionProvider.getConnection()); ArrayList<Category>
                                     list = posttd.getAllCategories();
 
                                     for (Category c : list) {
@@ -427,18 +430,14 @@
 
 
 
-                    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-                      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-                      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                      crossorigin="anonymous"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-                      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                      crossorigin="anonymous"></script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
-                      integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
-                      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-                    <script src="js/script.js"></script>
+                    <script
+                    src="https://code.jquery.com/jquery-3.4.1.min.js"
+                    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+                crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+                <script src="js/script.js" type="text/javascript"></script>
 
 
                     <script>
@@ -509,22 +508,38 @@
 
                     <!-- loading posts -->
 
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
-                      $(document).ready(function(e){
+
+                      function getPosts(catId,temp){
+                        $('#loader').show();
+                        $('#post-container').hide();
+                        $(".c-link").removeClass('active');
                         $.ajax({
-                          url:"load_posts.jsp",
-                          success:function(data,textStatus,jqXHR){
-                            console.log(data);
+                          url: "load_posts.jsp",
+                          data : {cid:catId},
+                          success: function (data, textStatus, jqXHR) {
+                            console.log("Posts loaded successfully:", data);
                             $('#loader').hide();
+                            $('#post-container').show();
                             $('#post-container').html(data);
-
+                            $(temp).addClass('active');
                           },
-                          error: function(){
+                          error: function (jqXHR, textStatus, errorThrown) {
+                            console.log("Error loading posts:", textStatus);
+                            // Handle the error gracefully (e.g., show an error message to the user)
+                          }
+                        });
+                      }
 
-                          },
-                        })
-                      })
+                      $(document).ready(function () {
+                        let allPostRef = $('.c-link')[0];
+                       getPosts(0,allPostRef);
+                      });
                     </script>
+
+
+
 
               </body>
 

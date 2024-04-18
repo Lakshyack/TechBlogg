@@ -1,10 +1,10 @@
 package com.tech.blog.servlets;
 
 import com.tech.blog.DAO.UserDao;
-import com.tech.blog.DAO.postDao;
+import com.tech.blog.DAO.PostDao;
 import com.tech.blog.entities.Message;
 import com.tech.blog.entities.User;
-import com.tech.blog.entities.post;
+import com.tech.blog.entities.Post;
 import com.tech.blog.helper.ConnectionProvider;
 import com.tech.blog.helper.helper;
 
@@ -37,8 +37,8 @@ public class addPostServlet extends HttpServlet {
 //            out.println("your post title is :" + pTitle);
 //            out.println(fileName);
 
-            post p = new post(pTitle, pContent, pCode, pImage, null, catId, userId);
-            postDao dao = new postDao(ConnectionProvider.getConnection());
+            Post p = new Post(pTitle, pContent, pCode, pImage, null, catId, userId);
+            PostDao dao = new PostDao(ConnectionProvider.getConnection());
             if (dao.savePost(p)) {
 
                 String path  = request.getRealPath("/") + "PostImg" + File.separator + pImage;

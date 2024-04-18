@@ -1,5 +1,5 @@
 package com.tech.blog.entities;
-
+import java.util.List;
 public class Category {
     private int cid;
     private String name;
